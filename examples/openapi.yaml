@@ -1,0 +1,110 @@
+openapi: 3.0.3
+info:
+  title: Sample Users API
+  version: 1.0.0
+  description: Example API for the API Documentation MCP server
+servers:
+  - url: https://api.example.com
+tags:
+  - name: users
+    description: User management
+  - name: authentication
+    description: Authentication operations
+paths:
+  /api/users:
+    get:
+      tags: [users]
+      summary: List users
+      description: Returns a paginated list of users
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags: [users]
+      summary: Create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/auth/login:
+    post:
+      tags: [authentication]
+      summary: Login
+      description: Authenticate with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+components:
+  schemas:
+    User:
+      type: object
+      required: [id, email]
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+    CreateUserRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        name:
+          type: string
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    AuthToken:
+      type: object
+      required: [accessToken]
+      properties:
+        accessToken:
+          type: string
+        expiresIn:
+          type: integer
