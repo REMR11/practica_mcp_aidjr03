@@ -38,6 +38,57 @@ docs/                Documentación técnica
 examples/            Especificaciones de ejemplo
 ```
 
-## Estado
+## Configuración
 
-Fase 01 — inicialización del entorno. El proceso de entrada escribe en stderr para no interferir con el canal STDIO que usará el protocolo MCP.
+Copia `.env.example` y ajusta el documento que se va a consultar. Las variables también pueden exportarse en el entorno del proceso.
+
+| Variable             | Valor inicial  | Uso                           |
+| -------------------- | -------------- | ----------------------------- |
+| `DOCS_DIR`           | `./examples`   | Directorio autorizado         |
+| `OPENAPI_FILE`       | `openapi.yaml` | Archivo relativo a `DOCS_DIR` |
+| `MAX_DOCUMENT_BYTES` | `1048576`      | Tamaño máximo del archivo     |
+
+## Ejecutar
+
+```bash
+npm run dev
+```
+
+El proceso espera mensajes MCP en stdin y responde por stdout. Los registros se escriben en stderr. Si el documento no puede cargarse, el proceso termina sin escribir en stdout.
+
+Para el artefacto compilado:
+
+```bash
+npm run build
+npm start
+```
+
+## Conectar un cliente
+
+Ejemplo de configuración para un cliente que lanza el servidor:
+
+```json
+{
+  "mcpServers": {
+    "api-documentation": {
+      "command": "npm",
+      "args": ["run", "dev"],
+      "cwd": "/ruta/al/proyecto",
+      "env": {
+        "DOCS_DIR": "./examples",
+        "OPENAPI_FILE": "openapi.yaml"
+      }
+    }
+  }
+}
+```
+
+### MCP Inspector
+
+```bash
+npx @modelcontextprotocol/inspector npm run dev
+```
+
+En el inspector, conecta el servidor. La respuesta de inicialización incluye el nombre `api-documentation-mcp` y la versión del paquete.
+
+El SDK utilizado es `@modelcontextprotocol/server` 2.4. La decisión está en `docs/decisions/001-mcp-sdk-v2.md`.
