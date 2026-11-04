@@ -1,0 +1,9 @@
+openapi: 3.0.3
+info:
+  title: Referencia a otro archivo
+  version: '1.0.0'
+paths: {}
+components:
+  schemas:
+    Secret:
+      $ref: ./external-fragment.yaml#/components/schemas/Secret

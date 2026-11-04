@@ -1,0 +1,149 @@
+openapi: 3.0.3
+info:
+  title: Users API
+  version: 1.0.0
+  description: API de ejemplo para consultar usuarios y sesiones.
+servers:
+  - url: https://api.example.com
+tags:
+  - name: users
+    description: Gestión de usuarios
+  - name: auth
+    description: Autenticación
+paths:
+  /api/users:
+    get:
+      tags: [users]
+      operationId: listUsers
+      summary: Lista usuarios
+      description: Devuelve los usuarios que coinciden con el filtro.
+      parameters:
+        - name: role
+          in: query
+          description: Filtra por rol
+          schema:
+            type: string
+            enum: [admin, member]
+      responses:
+        '200':
+          description: Listado de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags: [users]
+      operationId: createUser
+      summary: Crea un usuario
+      requestBody:
+        required: true
+        description: Datos del usuario
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Datos inválidos
+  /api/users/{userId}:
+    get:
+      tags: [users]
+      operationId: getUser
+      summary: Obtiene un usuario
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+  /api/auth/login:
+    post:
+      tags: [auth]
+      operationId: login
+      summary: Inicia sesión
+      description: Autenticación con correo y contraseña.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Sesión creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: Identificador del usuario
+      schema:
+        type: string
+  schemas:
+    User:
+      type: object
+      description: Usuario registrado
+      required: [id, email]
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [admin, member]
+          default: member
+    UserInput:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [admin, member]
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+          maxLength: 72
+    LoginResponse:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string

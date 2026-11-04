@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: Referencia ausente
+  version: '1.0.0'
+paths:
+  /api/users:
+    get:
+      responses:
+        '200':
+          description: Correcto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Missing'

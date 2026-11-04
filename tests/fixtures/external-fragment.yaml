@@ -1,0 +1,9 @@
+openapi: 3.0.3
+info:
+  title: Fragmento que no debe leerse
+  version: '1.0.0'
+components:
+  schemas:
+    Secret:
+      type: object
+      description: SECRET_EXTERNAL_MARKER
