@@ -25,6 +25,21 @@ El contenido del documento se trata como datos. No se evalúa código contenido 
 
 Los fallos de lectura, de esquema o de referencias se convierten en `InvalidDocumentationError`. El mensaje sustituye la ruta del archivo por la palabra «documento» y no incluye el directorio de trabajo.
 
+## Agregar un documento
+
+1. Coloca un archivo `.yaml`, `.yml` o `.json` dentro del directorio autorizado. El valor inicial es `examples/`.
+2. Define la ubicación con variables de entorno, tomando `.env.example` como referencia:
+
+```bash
+DOCS_DIR=./examples
+OPENAPI_FILE=openapi.yaml
+MAX_DOCUMENT_BYTES=1048576
+```
+
+`OPENAPI_FILE` es relativo a `DOCS_DIR`. Una ruta absoluta, un nombre con otra extensión o un acceso que salga del directorio —incluido un enlace simbólico— se rechaza. Un archivo ausente produce `DOCUMENTATION_NOT_FOUND`. Un archivo mayor que `MAX_DOCUMENT_BYTES` produce `DOCUMENT_TOO_LARGE`.
+
+`FileDocumentationRepository` resuelve la ruta, comprueba el tamaño y entrega el archivo al parser. El nombre que queda en la documentación es relativo al directorio autorizado.
+
 ## Documentos de ejemplo
 
 - `examples/openapi.yaml` es la especificación de demostración.

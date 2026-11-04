@@ -60,6 +60,7 @@ Todos los errores de negocio extienden `DomainError` y exponen un `code` estable
 | `ENDPOINT_NOT_FOUND`      | No existe la operación pedida                |
 | `SCHEMA_NOT_FOUND`        | No existe el esquema pedido                  |
 | `UNAUTHORIZED_PATH`       | La ruta sale del directorio autorizado       |
+| `DOCUMENT_TOO_LARGE`      | El archivo supera el tamaño máximo           |
 
 Los mensajes describen el problema sin incluir rutas internas del servidor.
 

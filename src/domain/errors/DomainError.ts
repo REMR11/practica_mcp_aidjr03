@@ -55,3 +55,9 @@ export class UnauthorizedPathError extends DomainError {
     super('UNAUTHORIZED_PATH', 'La ruta solicitada queda fuera del directorio autorizado.');
   }
 }
+
+export class DocumentTooLargeError extends DomainError {
+  constructor() {
+    super('DOCUMENT_TOO_LARGE', 'El documento supera el tamaño máximo permitido.');
+  }
+}
