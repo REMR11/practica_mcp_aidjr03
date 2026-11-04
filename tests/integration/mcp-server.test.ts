@@ -75,6 +75,37 @@ describe('servidor MCP', () => {
     await client.connect(transport);
     expect(client.getServerVersion()?.name).toBe('api-documentation-mcp');
     expect(stderr).toContain('escuchando por STDIO');
+
+    const tools = await client.listTools();
+    expect(tools.tools.map((tool) => tool.name).sort()).toEqual([
+      'get_endpoint',
+      'get_schema',
+      'list_endpoints',
+      'search_documentation',
+    ]);
+    const resources = await client.listResources();
+    expect(resources.resources.map((resource) => resource.uri)).toEqual(
+      expect.arrayContaining([
+        'api://documentation/overview',
+        'api://documentation/endpoints',
+        'api://documentation/schemas',
+      ]),
+    );
+    const prompts = await client.listPrompts();
+    expect(prompts.prompts.map((prompt) => prompt.name).sort()).toEqual([
+      'explain_api',
+      'generate_api_examples',
+      'review_endpoint',
+    ]);
+
+    const search = await client.callTool({
+      name: 'search_documentation',
+      arguments: { query: 'autenticación' },
+    });
+    expect(search.isError).not.toBe(true);
+    const block = search.content[0];
+    expect(block?.type === 'text' ? block.text : '').toContain('/api/auth/login');
+
     await client.close();
   });
 
