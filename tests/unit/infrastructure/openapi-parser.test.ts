@@ -82,7 +82,10 @@ describe('OpenApiParser', () => {
     ).rejects.toThrow(/[Rr]eferencia/);
   });
 
-  it('rechaza referencias circulares y YAML malformado', async () => {
+  it('no ejecuta etiquetas YAML y rechaza referencias circulares o YAML malformado', async () => {
+    await expect(
+      parser.parseFile(path.join(root, 'tests/fixtures/unsafe-tag.yaml'), 'unsafe-tag.yaml'),
+    ).rejects.toBeInstanceOf(InvalidDocumentationError);
     await expect(
       parser.parseFile(path.join(root, 'tests/fixtures/circular.yaml'), 'circular.yaml'),
     ).rejects.toThrow(/circulares/);

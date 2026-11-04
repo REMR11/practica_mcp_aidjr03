@@ -53,6 +53,19 @@ describe('FileDocumentationRepository', () => {
       repositoryFor({ docsDir, fileName: '../package.json', maxDocumentBytes: 1_048_576 }).load(),
     ).rejects.toBeInstanceOf(UnauthorizedPathError);
     await expect(
+      repositoryFor({ docsDir, fileName: '/etc/passwd', maxDocumentBytes: 1_048_576 }).load(),
+    ).rejects.toBeInstanceOf(UnauthorizedPathError);
+    await expect(
+      repositoryFor({ docsDir, fileName: 'notes.txt', maxDocumentBytes: 1_048_576 }).load(),
+    ).rejects.toBeInstanceOf(UnauthorizedPathError);
+    await expect(
+      repositoryFor({
+        docsDir,
+        fileName: 'openapi\u0000.yaml',
+        maxDocumentBytes: 1_048_576,
+      }).load(),
+    ).rejects.toBeInstanceOf(UnauthorizedPathError);
+    await expect(
       repositoryFor({ docsDir, fileName: 'linked.yaml', maxDocumentBytes: 1_048_576 }).load(),
     ).rejects.toBeInstanceOf(UnauthorizedPathError);
     await expect(

@@ -81,7 +81,7 @@ export class FileDocumentationRepository implements DocumentationRepository {
     const extension = path.extname(fileName).toLowerCase();
     if (
       fileName.length === 0 ||
-      fileName.includes('\0') ||
+      hasControlCharacter(fileName) ||
       path.isAbsolute(fileName) ||
       !ALLOWED_EXTENSIONS.has(extension)
     ) {
@@ -135,6 +135,16 @@ export class FileDocumentationRepository implements DocumentationRepository {
       sourceName: path.relative(root, realFile).split(path.sep).join('/'),
     };
   }
+}
+
+function hasControlCharacter(value: string): boolean {
+  for (const character of value) {
+    const code = character.codePointAt(0);
+    if (code !== undefined && code <= 31) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function isInside(root: string, candidate: string): boolean {

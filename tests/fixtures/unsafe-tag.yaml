@@ -1,0 +1,6 @@
+openapi: 3.0.3
+info:
+  title: Etiqueta ejecutable
+  version: '1.0.0'
+  description: !!python/object/apply:os.system ['echo pwned']
+paths: {}
