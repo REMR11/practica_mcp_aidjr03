@@ -61,3 +61,9 @@ export class DocumentTooLargeError extends DomainError {
     super('DOCUMENT_TOO_LARGE', 'El documento supera el tamaño máximo permitido.');
   }
 }
+
+export class InvalidQueryError extends DomainError {
+  constructor(message: string) {
+    super('INVALID_QUERY', message);
+  }
+}
