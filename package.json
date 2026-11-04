@@ -1,6 +1,6 @@
 {
   "name": "api-documentation-mcp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Servidor MCP para consultar, explorar y comprender documentación OpenAPI.",
   "type": "module",
   "license": "MIT",

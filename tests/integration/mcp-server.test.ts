@@ -45,7 +45,7 @@ describe('servidor MCP', () => {
 
     expect(client.getServerVersion()).toMatchObject({
       name: 'api-documentation-mcp',
-      version: '0.1.0',
+      version: '1.0.0',
     });
     expect(client.getInstructions()).toContain('1 operación cargada');
 
