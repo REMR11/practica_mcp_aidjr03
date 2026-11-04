@@ -29,7 +29,6 @@ export class FileDocumentationRepository implements DocumentationRepository {
   ) {}
 
   async load(): Promise<ApiDocumentation> {
-    this.cached = undefined;
     return this.document();
   }
 
