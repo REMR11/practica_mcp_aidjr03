@@ -2,6 +2,7 @@ import { McpServer } from '@modelcontextprotocol/server';
 
 import type { DocumentationService } from '../../application/services/DocumentationService.js';
 import { SERVER_NAME, SERVER_VERSION } from '../../config/constants.js';
+import { registerPrompts } from './prompts/registerPrompts.js';
 import { registerResources } from './resources/registerResources.js';
 import { registerTools } from './tools/registerTools.js';
 
@@ -20,5 +21,6 @@ export async function createMcpServer(service: DocumentationService): Promise<Mc
   );
   registerTools(server, service);
   registerResources(server, service);
+  registerPrompts(server, service);
   return server;
 }
